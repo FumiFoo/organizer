@@ -10,6 +10,7 @@ var express = require('express')
   , keyword = require('./models/keyword_list')
   , inquiry = require('./models/inquiry_list')
   , status = require('./models/status_list');
+var mongo = require('mongoose');
 
 var app = express();
 
@@ -28,19 +29,23 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+    var m_stat='1';
 
 // ホーム
 app.get('/', function(req, res) {
-   res.redirect('/keyword/list');
+    res.redirect('/index');
 });
- 
-// 一覧表示
-app.get('/keyword/list', function(req, res) {
-    var m_stat='1';
+
+app.get('/index', function(req, res){
     status.findOne({}, function(err, status) {
         if(err) throw err;
         m_stat=status.glasses;
     });
+    res.render('index', {m_stat:m_stat,pretty:true});
+});
+ 
+// 一覧表示
+app.get('/keyword/list', function(req, res) {
     keyword.find({}, function(err, keywords) {
         if(err) throw err;
         res.render('list', {title:'Address Book', keywords:keywords, m_stat:m_stat,pretty:true});
@@ -108,7 +113,7 @@ app.post('/keyword/insert', function(req, res) {
     con.face = req.param('face');
     con.save(function(err) {
         if(err) throw err;
-        res.redirect('/keyword/list');
+        res.redirect('/');
     });
 });
  

@@ -1,5 +1,5 @@
 var mongo = require('mongoose');
-var db = mongo.connect('mongodb://localhost/moe');
+var db = mongo.connect('mongodb://moe:moemoe\@ds045147.mongolab.com:45147/moe');
 var Schema = mongo.Schema
 
 var keyword_list = mongo.model('keyword_list',
